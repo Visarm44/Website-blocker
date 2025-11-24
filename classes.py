@@ -10,23 +10,23 @@ class Blocker:
         if t == None:
             t = datetime.now().hour
         
-        if time_window[0] <  t < time_window[1]:
+        if time_window[0] <=  t < time_window[1]:
             return True
         else:
             return False
         
-    
     def block(self):
         with open(self.host_path, "r") as f:
            host_content = f.read()
     
+        websites_to_add = []
         for website in self.website_list:
             if website not in host_content:
-                with open(self.host_path, "a") as f:
-                    f.write(f"\n{self.redirect} {website}")
-            else:
-                return
+                websites_to_add.append(f"\n{self.redirect} {website}")
 
+        if to_add:
+            with open(self.host_path, "a") as f:
+                f.write("".join(to_add))
     def unblock(self):
         with open(self.host_path, "r+") as f:
             lines = f.readlines()
